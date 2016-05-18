@@ -32,8 +32,8 @@ RUN useradd docker \
         && addgroup docker sudo \
         && true
 
-RUN echo 'docker:$USER_PASSW' | chpasswd \
-        && echo 'root:$ROOT_PASSW' | chpasswd \
+RUN echo "docker:$USER_PASSW" | chpasswd \
+        && echo "root:$ROOT_PASSW" | chpasswd \
         && true
 
 EXPOSE 22
