@@ -11,7 +11,7 @@ ENV USER_PASSW = ${USER_PASSW}
 ENV ROOT_PASSW = ${ROOT_PASSW}
 
 # Install packages
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
         && apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server sudo nodejs vim git nano telnet \
         && npm install -g qunit grunt grunt-cli lessc less webpack karma-cli \
