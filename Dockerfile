@@ -4,15 +4,23 @@ FROM buildpack-deps:jessie
 #
 MAINTAINER "Kirill Müller" <krlmlr+docker@mailbox.org>
 
+ARG USER_PASSW
+ARG ROOT_PASSW
+
 ENV USER_PASSW = ${USER_PASSW}
 ENV ROOT_PASSW = ${ROOT_PASSW}
 
 # Install packages
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server sudo
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
+        && apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server sudo nodejs vim git nano telnet \
+        && npm install -g qunit grunt grunt-cli lessc less webpack karma-cli \
+        && true
+
 ADD set_root_pw.sh /set_root_pw.sh
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
-RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config
+RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
   && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
   && touch /root/.Xauthority \
   && true
@@ -27,8 +35,9 @@ RUN useradd docker \
         && addgroup docker sudo \
         && true
 
-RUN echo 'docker:${USER_PASSW}' | chpasswd
-RUN echo 'root:${ROOT_PASSW}' | chpasswd
+RUN echo 'docker:'${USER_PASSW} | chpasswd \
+        && echo 'root:'${ROOT_PASSW} | chpasswd \
+        && true
 
 EXPOSE 22
 EXPOSE 8080
