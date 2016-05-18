@@ -2,7 +2,7 @@ FROM buildpack-deps:jessie
 #
 #
 #
-MAINTAINER "Kirill Müller" <krlmlr+docker@mailbox.org>
+MAINTAINER "Roman Agabekov" <r.agabekov@initlab.ru>
 
 ARG USER_PASSW
 ARG ROOT_PASSW
